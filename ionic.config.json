@@ -1,0 +1,7 @@
+{
+  "name": "tarcking",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular-standalone"
+}
