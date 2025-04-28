@@ -12,6 +12,9 @@ import {
   Polyline,
 } from "leaflet";
 import { Geolocation, Position } from "@capacitor/geolocation";
+import { registerPlugin } from '@capacitor/core';
+import {BackgroundGeolocationPlugin} from "@capacitor-community/background-geolocation";
+const BackgroundGeolocation = registerPlugin<BackgroundGeolocationPlugin>('BackgroundGeolocation');
 
 @Component({
   selector: "app-map",
@@ -25,7 +28,6 @@ import { Geolocation, Position } from "@capacitor/geolocation";
       [leafletLayers]="layers"
       (leafletMapReady)="onMapReady($event)"
     ></div>
-    <p>{{ watchId }}</p>
     <div class="buttons-container">
       <button
         (click)="startTracking()"
@@ -64,7 +66,7 @@ export class MapComponent implements OnInit {
   trackingActive: boolean = false;
 
   currentLocationIcon = icon({
-    iconUrl: "assets/location.png", // Картинка иконки
+    iconUrl: "assets/location.svg", // Картинка иконки
     iconSize: [32, 32],
     iconAnchor: [16, 32],
   });
@@ -89,54 +91,57 @@ export class MapComponent implements OnInit {
   }
 
   async startTracking() {
-    if (this.watchId) return;
+    try {
+      const callbackId = await BackgroundGeolocation.addWatcher(
+          {
+            backgroundTitle: 'Отслеживание маршрута',
+            backgroundMessage: 'Приложение отслеживает ваш маршрут.',
+            requestPermissions: true,
+            stale: false,
+          },
+          (position, error) => {
+            if (error) {
+              console.error('Ошибка отслеживания:', error);
+              return;
+            }
+            if (position) {
+              const { latitude, longitude } = position;
+              const newPoint: [number, number] = [latitude, longitude];
+              this.routeCoordinates.push(newPoint);
 
-    this.trackingActive = true;
-    this.routeCoordinates = []; // Очищаем старый маршрут
+              if (this.trackingMarker) {
+                this.trackingMarker.setLatLng(newPoint);
+              }
 
-    this.watchId = await Geolocation.watchPosition(
-      {},
-      (position: Position | null, err?) => {
-        if (err) {
-          console.error("Ошибка трекинга:", err);
-          return;
-        }
-        if (position) {
-          const lat = position.coords.latitude;
-          const lng = position.coords.longitude;
+              if (this.routePolyline) {
+                this.routePolyline.setLatLngs(this.routeCoordinates);
+              } else {
+                this.routePolyline = polyline(this.routeCoordinates, {
+                  color: 'blue',
+                });
+                this.layers.push(this.routePolyline);
+              }
 
-          const newPoint: [number, number] = [lat, lng];
-          this.routeCoordinates.push(newPoint);
-
-          // Обновляем маркер
-          if (this.trackingMarker) {
-            this.trackingMarker.setLatLng(newPoint);
+              if (this.map) {
+                this.map.setView(newPoint);
+              }
+            }
           }
+      );
 
-          // Обновляем/перерисовываем маршрут
-          if (this.routePolyline) {
-            this.routePolyline.setLatLngs(this.routeCoordinates);
-          } else {
-            this.routePolyline = polyline(this.routeCoordinates, {
-              color: "blue",
-            });
-            this.layers.push(this.routePolyline);
-          }
-
-          // Центрируем карту
-          if (this.map) {
-            this.map.setView(newPoint);
-          }
-        }
-      }
-    );
+      this.watchId = callbackId;
+      this.trackingActive = true;
+    } catch (error) {
+      console.error('Ошибка при запуске отслеживания:', error);
+    }
   }
 
   async stopTracking() {
     if (this.watchId) {
-      await Geolocation.clearWatch({ id: this.watchId });
+      await BackgroundGeolocation.removeWatcher({ id: this.watchId });
       this.watchId = undefined;
       this.trackingActive = false;
     }
   }
+
 }
