@@ -9,7 +9,10 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "lint": "ng lint"
+    "lint": "ng lint",
+    "add_android": "npx cap add android",
+    "android_sync": "npx cap sync",
+    "open_android": "export CAPACITOR_ANDROID_STUDIO_PATH=\"/Users/sara/Applications/Android Studio.app\" &&  npx cap open android"
   },
   "private": true,
   "dependencies": {
@@ -21,13 +24,16 @@
     "@angular/platform-browser": "^19.0.0",
     "@angular/platform-browser-dynamic": "^19.0.0",
     "@angular/router": "^19.0.0",
+    "@bluehalo/ngx-leaflet": "^19.0.0",
     "@capacitor/app": "7.0.1",
     "@capacitor/core": "7.2.0",
+    "@capacitor/geolocation": "^7.1.1",
     "@capacitor/haptics": "7.0.1",
     "@capacitor/keyboard": "7.0.1",
     "@capacitor/status-bar": "7.0.1",
     "@ionic/angular": "^8.0.0",
     "ionicons": "^7.0.0",
+    "leaflet": "^1.9.4",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.15.0"
@@ -45,6 +51,7 @@
     "@capacitor/cli": "7.2.0",
     "@ionic/angular-toolkit": "^12.0.0",
     "@types/jasmine": "~5.1.0",
+    "@types/leaflet": "^1.9.17",
     "@typescript-eslint/eslint-plugin": "^8.18.0",
     "@typescript-eslint/parser": "^8.18.0",
     "eslint": "^9.16.0",
