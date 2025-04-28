@@ -12,7 +12,9 @@
     "lint": "ng lint",
     "add_android": "npx cap add android",
     "android_sync": "npx cap sync",
-    "open_android": "export CAPACITOR_ANDROID_STUDIO_PATH=\"/Users/sara/Applications/Android Studio.app\" &&  npx cap open android"
+    "open_android": "export CAPACITOR_ANDROID_STUDIO_PATH=\"/Users/sara/Applications/Android Studio.app\" &&  npx cap open android",
+    "open_android_wind": "npx cap open android",
+    "live": "ionic cap run android -l --external"
   },
   "private": true,
   "dependencies": {
