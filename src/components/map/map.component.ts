@@ -96,6 +96,7 @@ export class MapComponent implements OnInit {
           {
             backgroundTitle: 'Отслеживание маршрута',
             backgroundMessage: 'Приложение отслеживает ваш маршрут.',
+            distanceFilter:5,
             requestPermissions: true,
             stale: false,
           },
