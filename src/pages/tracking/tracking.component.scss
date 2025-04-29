@@ -1,0 +1,35 @@
+:host{
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.buttons-container{
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  justify-content: center;
+}
+
+
+
+.start-button {
+  bottom: 20px;
+  padding: 12px 20px;
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-size: 16px;
+  cursor: pointer;
+
+  background-color: #007bff;
+  &:active {
+    background-color: #0056b3;
+  }
+}
+
+.stop-button{
+  background-color: #dc3545; /* Красный цвет для стоп-кнопки */
+  &:active {
+    background-color: #c82333;
+  }
+}

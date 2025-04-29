@@ -20,7 +20,7 @@ import { list, playCircle, radio } from "ionicons/icons";
         </ion-tab-button>
         <ion-tab-button tab="tracking">
           <ion-icon name="radio"></ion-icon>
-          Треккинг
+          Трекинг
         </ion-tab-button>
       </ion-tab-bar>
     </ion-tabs>

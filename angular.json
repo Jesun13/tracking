@@ -9,6 +9,12 @@
         "@ionic/angular-toolkit:page": {
           "styleext": "scss",
           "standalone": true
+        },
+        "@schematics/angular:component": {
+          "style": "scss",
+          "changeDetection": "OnPush",
+          "skipTests": true,
+          "inlineTemplate": true
         }
       },
       "root": "",
@@ -23,9 +29,7 @@
               "browser": ""
             },
             "index": "src/index.html",
-            "polyfills": [
-              "src/polyfills.ts"
-            ],
+            "polyfills": ["src/polyfills.ts"],
             "tsConfig": "tsconfig.app.json",
             "inlineStyleLanguage": "scss",
             "assets": [
@@ -40,7 +44,11 @@
                 "output": "assets/"
               }
             ],
-            "styles": ["src/global.scss", "src/theme/variables.scss","./node_modules/leaflet/dist/leaflet.css"],
+            "styles": [
+              "src/global.scss",
+              "src/theme/variables.scss",
+              "node_modules/leaflet/dist/leaflet.css"
+            ],
             "scripts": [],
             "browser": "src/main.ts"
           },
@@ -115,7 +123,7 @@
               }
             ],
             "styles": ["src/global.scss", "src/theme/variables.scss"],
-            "scripts": []
+            "scripts": ["node_modules/leaflet.locatecontrol/dist/L.Control.Locate.min.js"]
           },
           "configurations": {
             "ci": {
