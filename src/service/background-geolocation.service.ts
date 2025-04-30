@@ -15,7 +15,6 @@ export class BackgroundGeolocationService {
   speed = signal<number | null>(null);
 
   async startTracking() {
-    this.clear();
     this.watchId = await BackgroundGeolocation.addWatcher(
       {
         backgroundTitle: "Отслеживание маршрута",

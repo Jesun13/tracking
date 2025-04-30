@@ -10,11 +10,13 @@ import { icon, Map, marker, Marker, Polyline, polyline } from "leaflet";
 import { MapLocationComponent } from "../../components/map-location/map-location.component";
 import { BackgroundGeolocationService } from "../../service/background-geolocation.service";
 import { TransformSpeedPipe } from "../../pipes/transform-speed.pipe";
+import { IonButton } from "@ionic/angular/standalone";
+import { DbRoutesService } from "../../service/db-routes.service";
 
 @Component({
   selector: "app-tracking-map",
   standalone: true,
-  imports: [MapLocationComponent, TransformSpeedPipe],
+  imports: [MapLocationComponent, TransformSpeedPipe, IonButton],
   template: `
     <app-map-location (mapReadyEmit)="onMapReady($event)"></app-map-location>
     <button
@@ -27,16 +29,19 @@ import { TransformSpeedPipe } from "../../pipes/transform-speed.pipe";
 
     @if (tracking.trackingActive()) {
     <p>Скорость: {{ tracking.speed() | transformSpeed }}</p>
+    } @if(endMarker()){
+    <ion-button (click)="saveTracking()">Сохранить маршрут</ion-button>
     }
   `,
   styleUrls: ["./tracking.component.scss"],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export default class TrackingMapComponent {
+  private dbRoutesService = inject(DbRoutesService);
   public readonly tracking = inject(BackgroundGeolocationService);
   private map = signal<Map | undefined>(undefined);
   private routePolyline = signal<Polyline | undefined>(undefined);
-  private endMarker = signal<Marker | null>(null);
+  protected endMarker = signal<Marker | null>(null);
 
   private readonly endIcon = icon({
     iconUrl: "assets/finish.png",
@@ -78,13 +83,31 @@ export default class TrackingMapComponent {
     this.tracking.trackingActive() ? this.stopTracking() : this.startTracking();
   }
 
-  startTracking() {
+  async saveTracking() {
+    const coords = this.tracking.routeCoordinates();
+    if (coords.length === 0) return;
+
+    await this.dbRoutesService.saveRoute({
+      date: new Date(),
+      path: coords,
+    });
+
+    this.clearTracking();
+    console.log("Маршрут сохранён.");
+  }
+
+  clearTracking() {
     const marker = this.endMarker();
     const map = this.map();
     if (marker && map) {
       map.removeLayer(marker);
     }
     this.endMarker.set(null);
+    this.tracking.clear();
+  }
+
+  startTracking() {
+    this.clearTracking();
     this.tracking.startTracking().then();
   }
 
