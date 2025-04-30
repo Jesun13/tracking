@@ -13,6 +13,7 @@
     "add_android": "npx cap add android",
     "android_sync": "npx cap sync",
     "open_android": "ng build && npx cap sync && npx cap open android",
+    "assets_generate": "npx capacitor-assets generate --android",
     "open_android_mac": "export CAPACITOR_ANDROID_STUDIO_PATH=\"/Users/sara/Applications/Android Studio.app\" && ng build && npx cap sync && npx cap open android",
     "live": "ionic cap run android -l --external"
   },
@@ -52,6 +53,7 @@
     "@angular/cli": "^19.0.0",
     "@angular/compiler-cli": "^19.0.0",
     "@angular/language-service": "^19.0.0",
+    "@capacitor/assets": "^3.0.5",
     "@capacitor/cli": "7.2.0",
     "@ionic/angular-toolkit": "^12.0.0",
     "@types/jasmine": "~5.1.0",
