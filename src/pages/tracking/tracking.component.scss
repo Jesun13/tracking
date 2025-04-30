@@ -1,21 +1,15 @@
 :host{
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 40px;
+  width: 100%;
 }
-.buttons-container{
-  display: flex;
-  align-items: center;
-  gap: 20px;
-  justify-content: center;
-}
-
-
 
 .start-button {
   bottom: 20px;
   padding: 12px 20px;
   color: white;
+  width: 100%;
   border: none;
   border-radius: 12px;
   font-size: 16px;

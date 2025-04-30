@@ -15,7 +15,7 @@ import { latLng, tileLayer, Map, MapOptions, Layer, LatLng } from "leaflet";
   template: `
     <div
       leaflet
-      style="height: 600px; width: 100vw;"
+      style="height: 450px; width: 100vw;"
       [leafletOptions]="mapOptions()"
       [leafletLayers]="layers()"
       (leafletMapReady)="mapReady.emit($event)"
